@@ -1,10 +1,8 @@
-#!/usr/bin/env python3.2
+#!/usr/bin/env python2.7
 #-*- encoding: utf-8 -*-
 
-# __main__.py
-# 
 # Started on  Thu Oct 30 13:52:13 2014 Prost P.
-## Last update Thu Oct 30 14:32:20 2014 Prost P.
+## Last update Thu Oct 30 15:36:05 2014 Prost P.
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -22,6 +20,8 @@
 import sys
 import getopt
 
+from scan import scan
+
 if __name__=="__main__":
     optlist, args = getopt.getopt(sys.argv[1:], "h", ["help",])
     for o, a in optlist:
@@ -32,7 +32,7 @@ if __name__=="__main__":
                    \n\tscan: scan for valid text in file'''.format(sys.argv[0]))
             sys.exit(0)
 
-        elif o in "scan":
-            for filename in optlist[1:]:
-                do_scan(filename)
+    if args[0] in ("s", "scan") and len(args) >= 2:
+        for filename in args[1:]:
+            scan(filename)
     sys.exit(0)
