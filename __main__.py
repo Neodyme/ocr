@@ -2,7 +2,7 @@
 #-*- encoding: utf-8 -*-
 
 # Started on  Thu Oct 30 13:52:13 2014 Prost P.
-## Last update Thu Oct 30 15:36:05 2014 Prost P.
+## Last update Thu Oct 30 15:53:47 2014 Prost P.
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -32,7 +32,7 @@ if __name__=="__main__":
                    \n\tscan: scan for valid text in file'''.format(sys.argv[0]))
             sys.exit(0)
 
-    if args[0] in ("s", "scan") and len(args) >= 2:
+    if  len(args) >= 2 and args[0] in ("s", "scan"):
         for filename in args[1:]:
             scan(filename)
     sys.exit(0)
