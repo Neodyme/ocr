@@ -2,11 +2,12 @@
 #-*- encoding: utf-8 -*-
 # 
 # Started on  Thu Oct 30 14:46:24 2014 Prost P.
-## Last update Thu Oct 30 15:34:09 2014 Prost P.
+## Last update Mon Nov 10 21:43:11 2014 Prost P.
 #
 
+import cv
 import preprocess.do
 
 def scan(filename):
-    preprocess.do(filename)
+    img = preprocess.do(filename)
     return
