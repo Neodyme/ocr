@@ -4,6 +4,7 @@
 import cv2
 import numpy as np
 
+
 TARGET_WIDTH = 32
 TARGET_HEIGHT = 32
 
@@ -30,8 +31,8 @@ def crop(img):
                     max_width = i
     print(min_height, max_height, min_width, max_width)
     img_crop = img[min_width:max_width, min_height:max_height]
-    cv2.imshow('preprocess: after crop', img_crop)
-    cv2.waitKey(0)
+#    cv2.imshow('preprocess: after crop', img_crop)
+#    cv2.waitKey(0)
 
     return img_crop
 
@@ -47,26 +48,33 @@ def erode(img):
     kernel = np.ones((1, 1), np.uint8)
     erosion = cv2.erode(img, kernel,iterations = 1)
 
-    cv2.imshow('preprocess: after erode', erosion)
-    cv2.waitKey(0)
+#    cv2.imshow('preprocess: after erode', erosion)
+#    cv2.waitKey(0)
 
     return (erosion)
     
 #
 # Converti la l'image en n&b
 def threshold(img):
-    cv2.imshow('preprocess: before bw', img)
-    cv2.waitKey(0)
+#    cv2.imshow('preprocess: before bw', img)
+#    cv2.waitKey(0)
 
     blur = cv2.GaussianBlur(img,(1,1),0)
     ret3,th3 = cv2.threshold(blur,0,255,cv2.THRESH_BINARY+cv2.THRESH_OTSU)
 
-    cv2.imshow('preprocess: after bw', th3)
-    cv2.waitKey(0)
+#    cv2.imshow('preprocess: after bw', th3)
+#    cv2.waitKey(0)
 
     return th3
 #
 # execute le preprocessing
+
+def do2(filename):
+    img = cv2.imread(filename, cv2.CV_LOAD_IMAGE_GRAYSCALE)
+    img = threshold(img)
+    return img
+    
+
 def do(filename):
     img = cv2.imread(filename, cv2.CV_LOAD_IMAGE_GRAYSCALE)
     img = threshold(img)
