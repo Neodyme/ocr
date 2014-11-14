@@ -11,7 +11,7 @@ import preprocess
 #
 # cycle de scan de caracteres uniques
 def scan(filename):
-    img = preprocess.do(filename)
+    img = preprocess.do.do(filename)
     return
 #
 # cycle de scan de text complet
