@@ -74,6 +74,7 @@ def knn_train(files):
 def knn_find(knn, files):
     f = np.asmatrix(files)
     f = [f]
+    f = [np.asmatrix(img) for img in files]
     ret, result, neighbours, dist = knn.find_nearest(f, k=5)
     # correct = np.count_nonzero(result == labels)
     # accuracy = correct * 100.0 / 10000
