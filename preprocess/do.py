@@ -69,13 +69,13 @@ def threshold(img):
 #
 # execute le preprocessing
 
-def do2(filename):
+def process_text(filename):
     img = cv2.imread(filename, cv2.CV_LOAD_IMAGE_GRAYSCALE)
     img = threshold(img)
     return img
     
 
-def do(filename):
+def process_char(filename):
     img = cv2.imread(filename, cv2.CV_LOAD_IMAGE_GRAYSCALE)
     img = threshold(img)
     img = crop(img)
