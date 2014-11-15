@@ -20,6 +20,7 @@ def bounding_letter(img):
     contours,hierarchy = cv2.findContours(img.copy(),cv2.RETR_TREE,cv2.CHAIN_APPROX_SIMPLE)
     img2 = cv2.cvtColor(img,cv2.COLOR_GRAY2RGB)
     letter = []
+    retBox = []
     for i in range(0, len(contours) - 1):
         print(hierarchy[0][i])
         if hierarchy[0][i][3] != 0:
@@ -27,20 +28,17 @@ def bounding_letter(img):
 
 #        cv2.drawContours(img2, contours, i, (0,0,0), 3)
         box = cv2.boundingRect(cv2.approxPolyDP(contours[i], 3, True))
-        print(box)
+        retBox.append(box)
         cv2.rectangle(img2, (box[0], box[1]), (box[0] + box[2], box[1] + box[3]), (0,0,200),1)
-#        letter.append(img2[box[0]:(box[0] + box[2])])
-        print(img2[box[0]:(box[0] + box[2])][box[1]:(box[1] + box[3])])
-  #      print("test")
+        letter.append(img2[box[1]:(box[1] + box[3]), box[0]:(box[0] + box[2])])
 #        print(letter[len(letter) - 1])
- #       print("test2")
 #        cv2.imshow('letter bounding detection', letter[len(letter) - 1])
 #        cv2.waitKey(0)
 
     print(box)
     cv2.imshow('end letter bounding detection', img2)
     cv2.waitKey(0)
-    return img2
+    return letter, retBox
 
 def bounding_word(img):
     contours, hierarchy = cv2.findContours(img.copy(), cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
