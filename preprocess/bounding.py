@@ -5,7 +5,7 @@
 ## Login   <pprost@epitech.net>
 ## 
 ## Started on  Tue Nov 11 20:42:30 2014 Prost P.
-## Last update Sat Nov 15 16:18:14 2014 Prost P.
+## Last update Sat Nov 15 17:21:05 2014 Prost P.
 ##
 
 #        for i in range(0, len(contours)):
@@ -20,6 +20,7 @@ def bounding_letter(img):
     contours,hierarchy = cv2.findContours(img.copy(),cv2.RETR_TREE,cv2.CHAIN_APPROX_SIMPLE)
     img2 = cv2.cvtColor(img,cv2.COLOR_GRAY2RGB)
     letter = []
+    retBox = []
     for i in range(0, len(contours) - 1):
         print(hierarchy[0][i])
         if hierarchy[0][i][3] != 0:
@@ -27,21 +28,24 @@ def bounding_letter(img):
 
 #        cv2.drawContours(img2, contours, i, (0,0,0), 3)
         box = cv2.boundingRect(cv2.approxPolyDP(contours[i], 3, True))
-        print(box)
+        retBox.append(box)
         cv2.rectangle(img2, (box[0], box[1]), (box[0] + box[2], box[1] + box[3]), (0,0,200),1)
-#        letter.append(img2[box[0]:(box[0] + box[2])])
-        print(img2[box[0]:(box[0] + box[2])][box[1]:(box[1] + box[3])])
-#       print("test")
-#       print(letter[len(letter) - 1])
-#       print("test2")
-#       cv2.imshow('letter bounding detection', letter[len(letter) - 1])
-#       cv2.waitKey(0)
+        letter.append(img2[box[1]:(box[1] + box[3]), box[0]:(box[0] + box[2])])
+#        print(letter[len(letter) - 1])
+#        cv2.imshow('letter bounding detection', letter[len(letter) - 1])
+#        cv2.waitKey(0)
 
     print(box)
     cv2.imshow('end letter bounding detection', img2)
     cv2.waitKey(0)
-    return img2
+    return letter, retBox
 
+def img_getmevalue(img):
+    for i in img:
+        for j in i:
+            if j != 0:
+                n++
+                
 def bounding_word(img):
     contours, hierarchy = cv2.findContours(img.copy(), cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
     idx = 0
@@ -49,6 +53,7 @@ def bounding_word(img):
     box = []
     for cnt in contours:
         box.append(cv2.boundingRect(cnt))
+        img_getmevalue(img2[(cv2.boundingRect(cnt)[0], cv2.boundingRect(cnt)[1]),(cv2.boundingRect(cnt)[0] + cv2.boundingRect(cnt)[2], cv2.boundingRect(cnt]) + cv2.boundingRect(cnt)[3])])
         cv2.rectangle(img2,(cv2.boundingRect(cnt)[0], cv2.boundingRect(cnt)[1]),(cv2.boundingRect(cnt)[0] + cv2.boundingRect(cnt)[2], cv2.boundingRect(cnt)[1] + cv2.boundingRect(cnt)[3]),(00,200,200),1)  
 
 #    cv2.imshow('bounding detection', img2)
@@ -98,15 +103,14 @@ def bounding_word(img):
             gr.append(n)
         for a in gr2:
             if ((abs(b[0] - (a[2])) < 8 or abs(a[0] - (b[2])) < 8)\
-                and abs((a[1] + (a[3] - a[1]) / 2) - (b[1] + (b[3] - b[1]) / 2)) < 5) or\
+                and (abs((a[1] + (a[3] - a[1]) / 2) - (b[1] + (b[3] - b[1]) / 2)) < 5) or\
+                ((a[1] >= b[1] and a[3] <= b[3]) or (a[1] <= b[1] and a[3] >= b[3]))) or\
 \
-             (((a[0] >= b[0]) and (a[1] >= b[1]) and (a[2] <= b[2]) and (a[3] <= b[3])) and b[0] > 10) or\
+             (((a[0] >= b[0]) and (a[1] >= b[1]) and (a[2] <= b[2]) and (a[3] <= b[3])) and b[0] > 10):
 #\
-#            ((a[0] <= b[0]) and (a[1] <= b[1]) and (a[2] >= b[2]) and (a[3] >= b[3]) and a[0] > 10) or\
-\
-            ((((a[2] >= b[0]) and (a[2] <= b[2]) and (a[0] <= b[0])) or\
-              ((a[0] <= b[2]) and (a[0] >= b[0]) and (a[2] >= b[2]))) and \
-             ((a[1] >= b[1] and a[3] <= b[3]) or (a[1] <= b[1] and a[3] >= b[3])) ):
+#            ((((a[2] >= b[0]) and (a[2] <= b[2]) and (a[0] <= b[0])) or\
+#              ((a[0] <= b[2]) and (a[0] >= b[0]) and (a[2] >= b[2]))) and \
+#             ((a[1] >= b[1] and a[3] <= b[3]) or (a[1] <= b[1] and a[3] >= b[3])) ):
                 n.append(a)
                 used.append(a)
 
