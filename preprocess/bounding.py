@@ -8,10 +8,41 @@
 ## Last update Wed Nov 12 01:08:18 2014 Prost P.
 ##
 
+#        for i in range(0, len(contours)):
+#            if :
+#                test = True
+#                break
+
 import cv2
 import do
 
-def bounding(img):
+def bounding_letter(img):
+    contours,hierarchy = cv2.findContours(img.copy(),cv2.RETR_TREE,cv2.CHAIN_APPROX_SIMPLE)
+    img2 = cv2.cvtColor(img,cv2.COLOR_GRAY2RGB)
+    letter = []
+    for i in range(0, len(contours) - 1):
+        print(hierarchy[0][i])
+        if hierarchy[0][i][3] != 0:
+            continue
+
+#        cv2.drawContours(img2, contours, i, (0,0,0), 3)
+        box = cv2.boundingRect(cv2.approxPolyDP(contours[i], 3, True))
+        print(box)
+        cv2.rectangle(img2, (box[0], box[1]), (box[0] + box[2], box[1] + box[3]), (0,0,200),1)
+#        letter.append(img2[box[0]:(box[0] + box[2])])
+        print(img2[box[0]:(box[0] + box[2])][box[1]:(box[1] + box[3])])
+  #      print("test")
+#        print(letter[len(letter) - 1])
+ #       print("test2")
+#        cv2.imshow('letter bounding detection', letter[len(letter) - 1])
+#        cv2.waitKey(0)
+
+    print(box)
+    cv2.imshow('end letter bounding detection', img2)
+    cv2.waitKey(0)
+    return img2
+
+def bounding_word(img):
     contours, hierarchy = cv2.findContours(img.copy(), cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
     idx = 0
     img2 = cv2.cvtColor(img,cv2.COLOR_GRAY2RGB)
@@ -87,7 +118,7 @@ def bounding(img):
         
             #         roi = img[y:y + h, x:x + w]
 #    print(gr)
-    cv2.imshow('bounding detection', img2)
+    cv2.imshow('word bounding detection', img2)
     cv2.waitKey(0)
     return img
 

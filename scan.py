@@ -16,5 +16,6 @@ def scan(filename):
 #
 # cycle de scan de text complet
 def scantext(filename):
-    img = preprocess.bounding(preprocess.do2(filename))
+#    img = preprocess.bounding_word(preprocess.do2(filename))
+    img = preprocess.bounding_letter(preprocess.do2(filename))
     return
