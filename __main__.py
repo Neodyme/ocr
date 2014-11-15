@@ -40,7 +40,9 @@ if __name__ == "__main__":
         imgs = []
         for filename in args[1:]:
             imgs.append(scan(filename))
-        knn_find(knn, imgs)
+            img = scan(filename)
+            print type(img)
+        knn_find(knn, img)
     elif len(args) >= 2 and args[0] in ("t", "text"):
         for filename in args[1:]:
             scantext(filename)
