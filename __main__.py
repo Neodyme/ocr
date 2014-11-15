@@ -13,7 +13,7 @@
 # but WITHOUT ANY WARRANTY; without even the implied warranty of
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 # GNU General Public License for more details.
-#        
+#
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>
 
@@ -24,20 +24,23 @@ from scan import *
 
 def print_help():
     print('''Usage: {0}: [OPTION] scan|text|learn file [file...]\
-          \nExtract string from image file 
+          \nExtract string from image file
           \nvalid argument may be:\
           \n    -h, --help: print this help message\
           \n    scan: scan for valid text in file'''.format(sys.argv[0]))
     sys.exit(0)
 
-if __name__=="__main__":
-    optlist, args = getopt.getopt(sys.argv[1:], "h", ["help",])
+if __name__ == "__main__":
+    optlist, args = getopt.getopt(sys.argv[1:], "h", ["help"])
     for o, a in optlist:
         if o in ("-h", "--help") :
             print_help()
     if len(args) >= 2 and args[0] in ("s", "scan"):
+        knn = knn_dataset()
+        imgs = []
         for filename in args[1:]:
-            scan(filename)
+            imgs.append(scan(filename))
+        knn_find(knn, imgs)
     elif len(args) >= 2 and args[0] in ("t", "text"):
         for filename in args[1:]:
             scantext(filename)
