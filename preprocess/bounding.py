@@ -16,9 +16,38 @@
 import cv2
 import do
 
+def checkPointInBox(x, y, box):
+    if x >= box[0] and x <= box[0] + box[2] and y >= box[1] and y <= box[1] + box[3]:
+        return True
+    return False
+
+def doesOtherBoxCross(box, otherBox):
+        if checkPointInBox(otherBox[0], otherBox[1], box) or \
+           checkPointInBox(otherBox[0] + otherBox[2], otherBox[1], box) or \
+           checkPointInBox(otherBox[0], otherBox[1] + otherBox[3], box) or \
+           checkPointInBox(otherBox[0] + otherBox[2], otherBox[1] + otherBox[3], box):
+            return True
+        return False
+
+
+def clean_image(img, box, listBox):
+    i = 0
+    for otherBox in listBox:
+        if otherBox[0] == box[0] and otherBox[1] == box[1] and otherBox[2] == box[2] and otherBox[3] == box[3] or \
+           doesOtherBoxCross(box, otherBox) == False:
+            continue
+        cleanX = box[0] - otherBox[0]
+        for x in range(max(otherBox[0] - box[0], 0), min((otherBox[0] + otherBox[2]) - box[0], box[2])):
+            for y in range(max(otherBox[1] - box[1], 0), min((otherBox[1] + otherBox[3]) - box[1], box[3])):
+                img[y][x] = [255, 255, 255]
+        i += 1
+    return img
+    
+
 def bounding_letter(img):
     contours,hierarchy = cv2.findContours(img.copy(),cv2.RETR_TREE,cv2.CHAIN_APPROX_SIMPLE)
     img2 = cv2.cvtColor(img,cv2.COLOR_GRAY2RGB)
+    img3 = cv2.cvtColor(img,cv2.COLOR_GRAY2RGB)
     letter = []
     retBox = []
     for i in range(0, len(contours) - 1):
@@ -29,14 +58,21 @@ def bounding_letter(img):
 #        cv2.drawContours(img2, contours, i, (0,0,0), 3)
         box = cv2.boundingRect(cv2.approxPolyDP(contours[i], 3, True))
         retBox.append(box)
-        cv2.rectangle(img2, (box[0], box[1]), (box[0] + box[2], box[1] + box[3]), (0,0,200),1)
-        letter.append(img2[box[1]:(box[1] + box[3]), box[0]:(box[0] + box[2])])
         #        print(letter[len(letter) - 1])
         #        cv2.imshow('letter bounding detection', letter[len(letter) - 1])
         #        cv2.waitKey(0)
-#    print(box)
-    cv2.imshow('end letter bounding detection', img2)
+        #    print(box)
+    for box in retBox:
+        letter.append(clean_image(img2.copy()[box[1]:(box[1] + box[3]), box[0]:(box[0] + box[2])], box, retBox))
+#        cv2.rectangle(img2, (box[0], box[1]), (box[0] + box[2], box[1] + box[3]), (0,0,200),1)
+        cv2.rectangle(img3, (box[0], box[1]), (box[0] + box[2], box[1] + box[3]), (0,0,200),1)
+    cv2.imshow('end letter bounding detection', img3)
     cv2.waitKey(0)
+
+    for let in letter:
+        cv2.imshow('2end letter bounding detection', let)
+        cv2.waitKey(0)
+
     return letter, retBox
 
 def bounding_word(img):
