@@ -5,7 +5,7 @@
 ## Login   <pprost@epitech.net>
 ## 
 ## Started on  Tue Nov 11 20:42:30 2014 Prost P.
-## Last update Wed Nov 12 01:08:18 2014 Prost P.
+## Last update Sun Nov 23 23:35:48 2014 Prost P.
 ##
 
 #        for i in range(0, len(contours)):
@@ -66,12 +66,12 @@ def bounding_letter(img):
         letter.append(clean_image(img2.copy()[box[1]:(box[1] + box[3]), box[0]:(box[0] + box[2])], box, retBox))
 #        cv2.rectangle(img2, (box[0], box[1]), (box[0] + box[2], box[1] + box[3]), (0,0,200),1)
         cv2.rectangle(img3, (box[0], box[1]), (box[0] + box[2], box[1] + box[3]), (0,0,200),1)
-    cv2.imshow('end letter bounding detection', img3)
-    cv2.waitKey(0)
+#    cv2.imshow('end letter bounding detection', img3)
+#    cv2.waitKey(0)
 
-    for let in letter:
-        cv2.imshow('2end letter bounding detection', let)
-        cv2.waitKey(0)
+#    for let in letter:
+#        cv2.imshow('2end letter bounding detection', let)
+#        cv2.waitKey(0)
 
     return letter, retBox
 
@@ -129,29 +129,64 @@ def bounding_word(img):
         for a in gr2:
             if ((abs(b[0] - (a[2])) < 7 or abs(a[0] - (b[2])) < 7)\
                 and abs((a[1] + (a[3] - a[1]) / 2) - (b[1] + (b[3] - b[1]) / 2)) < 5) or\
-\
              (((a[0] >= b[0]) and (a[1] >= b[1]) and (a[2] <= b[2]) and (a[3] <= b[3])) and b[0] > 10) or\
-\
-            ((a[0] <= b[0]) and (a[1] <= b[1]) and (a[2] >= b[2]) and (a[3] >= b[3]) and a[0] > 10) or\
-\
-            ((((a[2] >= b[0]) and (a[2] <= b[2]) and (a[0] <= b[0])) or\
-              ((a[0] <= b[2]) and (a[0] >= b[0]) and (a[2] >= b[2]))) and \
+             ((a[0] <= b[0]) and (a[1] <= b[1]) and (a[2] >= b[2]) and (a[3] >= b[3]) and a[0] > 10) or\
+             ((((a[2] >= b[0]) and (a[2] <= b[2]) and (a[0] <= b[0])) or\
+             ((a[0] <= b[2]) and (a[0] >= b[0]) and (a[2] >= b[2]))) and \
              (abs((a[1] + (a[3] - a[1]) / 2) - (b[1] + (b[3] - b[1]) / 2)) < 5)):
                 n.append(a)
                 used.append(a)
-
         used.append(b)
 
+
+    ret = []
+    ret2 = []
     for n in gr:
         gxmin = min([x[0] for x in n])
         gymin = min([x[1] for x in n])
         gwmax = max([x[2] for x in n])
         ghmax = max([x[3] for x in n])
         cv2.rectangle(img2,(gxmin, gymin),(gwmax,ghmax),(200,0,0),1)
-#        print(n)
+        ret.append([gxmin, gymin, gwmax, ghmax, True])
+
+#
+# 3e passe, detection de ligne et ordinance des mots
+    phrases = []
+    used = []
+    for b in ret:
+        if b[0] < 10:
+            continue
+        if b in used:
+            for n in gr:
+                if b in n:
+                    break
+        else:
+            n = [b]
+            phrases.append(n)
+        for a in ret:
+             gymin = min([x[1] for x in n])             
+             ghmax = max([x[3] for x in n])
+             if (b[1] <= a[3] and b[1] >= a[1] or \
+                b[3] <= a[3] and b[3] >= a[1]) and abs(((ghmax - gymin)/2) - ((a[3] - a[1]) / 2)) < 20 :
+                n.append(a)
+                used.append(a)
+        used.append(b)
+    for n in phrases:
+        gxmin = min([x[0] for x in n])
+        gymin = min([x[1] for x in n])
+        gwmax = max([x[2] for x in n])
+        ghmax = max([x[3] for x in n])
+        cv2.rectangle(img2,(gxmin, gymin),(gwmax,ghmax),(50,200,40),1)
+        ret.append([gxmin, gymin, gwmax, ghmax, True])
+        n.sort(key=lambda x: x[0])
+        k = 0
+        for i in n:
+            cv2.putText(img2, "{}".format(k), (i[0], i[1]),
+                cv2.FONT_HERSHEY_COMPLEX_SMALL, 0.6, (0, 0, 255))
+            k += 1
         
-            #         roi = img[y:y + h, x:x + w]
-#    print(gr)
+
+
     cv2.imshow('test word bounding detection', img2)
     cv2.waitKey(0)
     return img
