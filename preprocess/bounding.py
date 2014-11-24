@@ -5,7 +5,7 @@
 ## Login   <pprost@epitech.net>
 ## 
 ## Started on  Tue Nov 11 20:42:30 2014 Prost P.
-## Last update Sun Nov 23 23:35:48 2014 Prost P.
+## Last update Mon Nov 24 22:38:37 2014 Prost P.
 ##
 
 #        for i in range(0, len(contours)):
@@ -167,10 +167,16 @@ def bounding_word(img):
              gymin = min([x[1] for x in n])             
              ghmax = max([x[3] for x in n])
              if (b[1] <= a[3] and b[1] >= a[1] or \
-                b[3] <= a[3] and b[3] >= a[1]) and abs(((ghmax - gymin)/2) - ((a[3] - a[1]) / 2)) < 20 :
+                b[3] <= a[3] and b[3] >= a[1]) and abs(((ghmax - gymin)/2) - ((a[3] - a[1]) / 2)) < 30 :
                 n.append(a)
                 used.append(a)
         used.append(b)
+
+#
+# tri
+#
+    phrases.sort(key=lambda x: min([key[0] for key in x]))
+    j = 0
     for n in phrases:
         gxmin = min([x[0] for x in n])
         gymin = min([x[1] for x in n])
@@ -179,14 +185,20 @@ def bounding_word(img):
         cv2.rectangle(img2,(gxmin, gymin),(gwmax,ghmax),(50,200,40),1)
         ret.append([gxmin, gymin, gwmax, ghmax, True])
         n.sort(key=lambda x: x[0])
+        cv2.putText(img2, "{}".format(j), (gxmin - 30, gymin),
+                    cv2.FONT_HERSHEY_COMPLEX_SMALL, 0.6, (0, 200, 100))
         k = 0
         for i in n:
+            for n2 in phrases:
+                if len(n2) == 0:
+                    phrases.remove(n2)
+                if i in n2 and n2 != n:
+                    n2.remove(i)
             cv2.putText(img2, "{}".format(k), (i[0], i[1]),
-                cv2.FONT_HERSHEY_COMPLEX_SMALL, 0.6, (0, 0, 255))
+                    cv2.FONT_HERSHEY_COMPLEX_SMALL, 0.6, (0, 0, 255))
             k += 1
-        
-
+        j += 1
 
     cv2.imshow('test word bounding detection', img2)
     cv2.waitKey(0)
-    return img
+    return phrases
