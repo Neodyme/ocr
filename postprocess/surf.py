@@ -9,22 +9,17 @@ from preprocess import do
 path = "../example_dataset/step1/"
 
 def calculate(img1, img2):
-	hessian_threshold = 5000
-	detector = cv2.SURF(hessian_threshold)
-	# # Initiate STAR detector
-	# star = cv2.FeatureDetector_create("SURF")
-
-	# # Initiate BRIEF extractor
-	# brief = cv2.DescriptorExtractor_create("SURF")
+	detector = cv2.SURF()
 
 	# # detect keypoints
-	# kp1 = star.detect(img1)
-	# kp2 = star.detect(img2)
+	kp1 = detector.detect(img1, None)
+	kp2 = detector.detect(img2, None)
 
 	# descriptors
-	k1, d1 = detector.detectAndCompute(img1, None)
-	k2, d2 = detector.detectAndCompute(img2, None)
-	print d2
+	k1, d1 = detector.compute(img1, kp1)
+	k2, d2 = detector.compute(img2, kp2)
+	if d2 == None:
+		return 0
 	# create BFMatcher object
 	bf = cv2.BFMatcher(cv2.NORM_L2, crossCheck=True)
 
@@ -37,7 +32,8 @@ def calculate(img1, img2):
 	val = 0.0
 	for matche in matches:
 		val += matche.distance
-	val /= len(matches)
+	if (len(matches) > 0):
+		val /= len(matches)
 	val = (1.0 - val) * 100.0
 
 	return val
@@ -69,11 +65,9 @@ def getCharacter(img):
 	best = ""
 	score = 0.0
 	for key, value in db.items():
-		if len(key) != 1:
-			continue
-		print key
-		tmp = do.do(value)
-		s = calculate(img, tmp)
+		tmp = cv2.imread(value)
+		gray= cv2.cvtColor(tmp,cv2.COLOR_BGR2GRAY)
+		s = calculate(img, gray)
 		if s > score:
 			score = s
 			best = key
