@@ -51,7 +51,7 @@ def findLetter(knn, lines):
         for words in line:
             for word in words:
                 for c in word:
-                    def img = c.reshape(-1, 1)
+                    img = c.reshape(-1, 1)
                     ret, result, neighbours, dist = knn.find_nearest(numpy.float32(img), 5)
                     print "Expected char: {}".format(test_char)
                     print "Result: {}".format(chr(int(ret)))
