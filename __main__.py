@@ -1,9 +1,6 @@
 #!/usr/bin/env python2.7
 #-*- encoding: utf-8 -*-
 
-# Started on  Thu Oct 30 13:52:13 2014 Prost P.
-## Last update Tue Nov 11 21:45:43 2014 Prost P.
-#
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
 # the Free Software Foundation, either version 3 of the License, or
@@ -21,6 +18,7 @@ import sys
 import getopt
 
 from scan import *
+from gui import gui
 
 def print_help():
     print('''Usage: {0}: [OPTION] scan|text|learn file [file...]\
@@ -47,5 +45,5 @@ if __name__=="__main__":
         else:
             learnLetter()
     else:
-       print_help()
+       gui(args)
     sys.exit(0)
