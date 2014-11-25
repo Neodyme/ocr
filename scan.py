@@ -19,10 +19,14 @@ def scan(filename):
 # cycle de scan de text complet
 def scantext(filename):
     lines = preprocess.bounding_word(cv2.imread(filename, cv2.CV_LOAD_IMAGE_GRAYSCALE), filename)
+    l = []
     for line in lines:
+        words = []
         for word in line:
-            img = preprocess.bounding_letter(word)
-    return
+            chars = preprocess.bounding_letter(word)
+            words.append(chars)
+        l.append(words)
+    return l
 
 #
 # cycle d'apprentissage de lettre
@@ -40,13 +44,17 @@ def learnLetter(directory = "./dataset/"):
     # print(numpy.array(imgList).astype(numpy.float64))
     # print(numpy.array(imgTag).astype(numpy.float64))
     knn.train(numpy.float32(imgList), numpy.float32(imgTag))
-    test = "./dataset/P.bmp"
-    test_char = path.basename(test)[0]
-    img = [preprocess.process_char(test).reshape(-1, 1)]
-    ret, result, neighbours, dist = knn.find_nearest(numpy.float32(img), 5)
-    print "Expected char: {}".format(test_char)
-    print "Result: {}".format(chr(int(ret)))
-    print "(result: {})".format([chr(int(r)) for r in result])
-    print "Neighbours: {}".format([chr(int(n)) for n in neighbours.reshape(-1, 1)])
-    print "Distances: {}".format(dist)
     return knn
+
+def findLetter(knn, lines):
+    for line in lines:
+        for words in line:
+            for word in words:
+                for c in word:
+                    def img = c.reshape(-1, 1)
+                    ret, result, neighbours, dist = knn.find_nearest(numpy.float32(img), 5)
+                    print "Expected char: {}".format(test_char)
+                    print "Result: {}".format(chr(int(ret)))
+                    print "(result: {})".format([chr(int(r)) for r in result])
+                    print "Neighbours: {}".format([chr(int(n)) for n in neighbours.reshape(-1, 1)])
+                    print "Distances: {}".format(dist)
