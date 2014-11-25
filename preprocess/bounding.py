@@ -42,21 +42,22 @@ def clean_image(img, box, listBox):
                 img[y][x] = [255, 255, 255]
         i += 1
     return img
-    
 
 def sortListBox(listBox):
     return sorted(listBox, key=lambda box:box[0])
 
 def bounding_letter(img):
+    print("test")
     contours,hierarchy = cv2.findContours(do.threshold(img.copy()),cv2.RETR_TREE,cv2.CHAIN_APPROX_SIMPLE)
+#    print(contours)
     img2 = cv2.cvtColor(img,cv2.COLOR_GRAY2RGB)
     img3 = cv2.cvtColor(img,cv2.COLOR_GRAY2RGB)
     letter = []
     retBox = []
+    print(hierarchy)
     for i in range(0, len(contours) - 1):
-        if hierarchy[0][i][3] != 0:
+        if hierarchy[0][i][3] != 0 and hierarchy[0][i][2] == -1:
             continue
-
 #        cv2.drawContours(img2, contours, i, (0,0,0), 3)
         box = cv2.boundingRect(cv2.approxPolyDP(contours[i], 3, True))
         retBox.append(box)
@@ -69,12 +70,12 @@ def bounding_letter(img):
         letter.append(clean_image(img2.copy()[box[1]:(box[1] + box[3]), box[0]:(box[0] + box[2])], box, retBox))
 #        cv2.rectangle(img2, (box[0], box[1]), (box[0] + box[2], box[1] + box[3]), (0,0,200),1)
         cv2.rectangle(img3, (box[0], box[1]), (box[0] + box[2], box[1] + box[3]), (0,0,200),1)
-#    cv2.imshow('end letter bounding detection', img3)
-#    cv2.waitKey(0)
+ #       cv2.imshow('end letter bounding detection', img3)
+#        cv2.waitKey(0)
 
 #    for let in letter:
 #        cv2.imshow('2end letter bounding detection', let)
-#        cv2.waitKey(0)
+ #       cv2.waitKey(0)
 
     return letter, retBox
 
@@ -203,7 +204,7 @@ def bounding_word(img, filename):
                     cv2.FONT_HERSHEY_COMPLEX_SMALL, 0.6, (0, 0, 255))
                 k += 1
             cv2.rectangle(img2,(gxmin, gymin),(gwmax,ghmax),(50,200,40),1)
-        return_phrase = ([img3[x[1]:x[3], x[0]:x[2]].copy() for x in n])
+        return_phrase = ([img3[(x[1] - 2):(x[3] + 2), (x[0] - 2):(x[2] + 2)].copy() for x in n])
         ret.append(return_phrase)
         j += 1
 

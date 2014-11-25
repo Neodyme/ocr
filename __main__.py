@@ -18,7 +18,7 @@ import sys
 import getopt
 
 from scan import *
-from gui import gui
+#from gui import gui
 
 def print_help():
     print('''Usage: {0}: [OPTION] scan|text|learn file [file...]\
@@ -44,6 +44,6 @@ if __name__=="__main__":
             learnLetter(filename)
         else:
             learnLetter()
-    else:
-       gui(args)
+#    else:
+ #      gui(args)
     sys.exit(0)
