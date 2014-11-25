@@ -41,6 +41,11 @@ if __name__=="__main__":
     elif len(args) >= 2 and args[0] in ("t", "text"):
         for filename in args[1:]:
             scantext(filename)
+    elif len(args) >= 1 and args[0] in ("l", "learn"):
+        if len(args) >= 2:
+            learnLetter(filename)
+        else:
+            learnLetter()
     else:
        print_help()
     sys.exit(0)

@@ -44,14 +44,16 @@ def clean_image(img, box, listBox):
     return img
     
 
+def sortListBox(listBox):
+    return sorted(listBox, key=lambda box:box[0])
+
 def bounding_letter(img):
-    contours,hierarchy = cv2.findContours(img.copy(),cv2.RETR_TREE,cv2.CHAIN_APPROX_SIMPLE)
+    contours,hierarchy = cv2.findContours(do.threshold(img.copy()),cv2.RETR_TREE,cv2.CHAIN_APPROX_SIMPLE)
     img2 = cv2.cvtColor(img,cv2.COLOR_GRAY2RGB)
     img3 = cv2.cvtColor(img,cv2.COLOR_GRAY2RGB)
     letter = []
     retBox = []
     for i in range(0, len(contours) - 1):
-#        print(hierarchy[0][i])
         if hierarchy[0][i][3] != 0:
             continue
 
@@ -62,6 +64,7 @@ def bounding_letter(img):
         #        cv2.imshow('letter bounding detection', letter[len(letter) - 1])
         #        cv2.waitKey(0)
         #    print(box)
+        retBox = sortListBox(retBox)
     for box in retBox:
         letter.append(clean_image(img2.copy()[box[1]:(box[1] + box[3]), box[0]:(box[0] + box[2])], box, retBox))
 #        cv2.rectangle(img2, (box[0], box[1]), (box[0] + box[2], box[1] + box[3]), (0,0,200),1)
@@ -76,7 +79,7 @@ def bounding_letter(img):
     return letter, retBox
 
 def bounding_word(img):
-    contours, hierarchy = cv2.findContours(img.copy(), cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
+    contours, hierarchy = cv2.findContours(do.threshold(img.copy()), cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
     idx = 0
     img2 = cv2.cvtColor(img,cv2.COLOR_GRAY2RGB)
     box = []
@@ -203,6 +206,7 @@ def bounding_word(img):
         return_phrase.append([img2[x[1]:x[3], x[0]:x[2]].copy() for x in n])
         ret.append(return_phrase)
         j += 1
+
 
     cv2.imshow('test word bounding detection', img2)
     cv2.waitKey(0)
