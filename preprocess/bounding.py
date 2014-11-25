@@ -5,7 +5,7 @@
 ## Login   <pprost@epitech.net>
 ## 
 ## Started on  Tue Nov 11 20:42:30 2014 Prost P.
-## Last update Tue Nov 25 20:51:01 2014 Prost P.
+## Last update Tue Nov 25 21:03:09 2014 Prost P.
 ##
 
 #        for i in range(0, len(contours)):
@@ -80,7 +80,7 @@ def bounding_letter(img):
 
 def bounding_word(img, filename):
     img3 = cv2.imread(filename, cv2.CV_LOAD_IMAGE_GRAYSCALE)
-    contours, hierarchy = cv2.findContours(img.copy(), cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
+    contours, hierarchy = cv2.findContours(do.threshold(img.copy()), cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
     idx = 0
     img2 = cv2.cvtColor(img,cv2.COLOR_GRAY2RGB)
     box = []
