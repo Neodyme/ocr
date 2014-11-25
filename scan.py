@@ -2,7 +2,7 @@
 #-*- encoding: utf-8 -*-
 # 
 # Started on  Thu Oct 30 14:46:24 2014 Prost P.
-## Last update Tue Nov 25 20:51:30 2014 Prost P.
+## Last update Tue Nov 25 20:56:08 2014 Prost P.
 #
 
 import cv2
@@ -18,7 +18,7 @@ def scan(filename):
 #
 # cycle de scan de text complet
 def scantext(filename):
-    lines = preprocess.bounding_word(cv2.imread(filename, cv2.CV_LOAD_IMAGE_GRAYSCALE))
+    lines = preprocess.bounding_word(cv2.imread(filename, cv2.CV_LOAD_IMAGE_GRAYSCALE), filename)
     for line in lines:
         for word in line:
             img = preprocess.bounding_letter(word)
