@@ -9,6 +9,42 @@ from preprocess import do
 
 path = "../example_dataset/step1/"
 
+strtochrsym = {
+	"amper": "&",
+	"apos": "'",
+	"arob": "@",
+	"bquote": "`",
+	"bslash": "\\",
+	"caret": "^",
+	"colon": ":",
+	"comma": ",",
+	"dollar": "$",
+	"equal": "=",
+	"exclmark": "!",
+	"gthan": ">",
+	"hyphen": "-",
+	"lcbracket": "{",
+	"lparen": "(",
+	"lsqbracket": "[",
+	"lthan": "<",
+	"num": "#",
+	"pcent": "%",
+	"pipe": "|",
+	"plus": "+",
+	"point": ".",
+	"questmark": "?",
+	"quotmark": "\"",
+	"rcbracket": "}",
+	"rparen": ")",
+	"rsqbracket": "]",
+	"scolon": ";",
+	"slash": "/",
+	"space": " ",
+	"star": "*",
+	"tilde": "~",
+	"under": "_"
+}
+
 def calculate(img1, img2):
     detector = cv2.SURF()
 
@@ -49,7 +85,7 @@ def getAllImageData():
         if pos < 0:
             pos = tmp[0].find("sym_", 0)
             if pos >= 0:
-                c = tmp[0][pos+4:]
+                c = strtochrsym[tmp[0][pos+4:]]
             else:
                 pos = tmp[0].find("num_", 0)
                 if pos >= 0:
