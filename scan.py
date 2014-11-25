@@ -1,6 +1,6 @@
 #!/usr/bin/env python2.7
 #-*- encoding: utf-8 -*-
-# 
+#
 # Started on  Thu Oct 30 14:46:24 2014 Prost P.
 ## Last update Tue Nov 25 20:56:08 2014 Prost P.
 #
@@ -32,15 +32,21 @@ def learnLetter(directory = "./dataset/"):
     imgTag = []
     i = 0
     for filename in glob(path.join(directory, '*.bmp')):
-#        print(filename)
+        # print(filename)
         imgList.append(preprocess.process_char(filename).reshape(-1, 1))
-#        print(path.basename(filename)[0])
+        # print(path.basename(filename)[0])
         imgTag.append(ord(path.basename(filename)[0]))
         i += 1
-#    print(numpy.array(imgList).astype(numpy.float64))
- #   print(numpy.array(imgTag).astype(numpy.float64))
+    # print(numpy.array(imgList).astype(numpy.float64))
+    # print(numpy.array(imgTag).astype(numpy.float64))
     knn.train(numpy.float32(imgList), numpy.float32(imgTag))
-    img = [preprocess.process_char("./dataset/P.bmp").reshape(-1, 1)]
-    ret, result, neighbours, dist = knn.find_nearest(numpy.float32(img), 3)
-    print(result, neighbours, dist)
+    test = "./dataset/P.bmp"
+    test_char = path.basename(test)[0]
+    img = [preprocess.process_char(test).reshape(-1, 1)]
+    ret, result, neighbours, dist = knn.find_nearest(numpy.float32(img), 5)
+    print "Expected char: {}".format(test_char)
+    print "Result: {}".format(chr(int(ret)))
+    print "(result: {})".format([chr(int(r)) for r in result])
+    print "Neighbours: {}".format([chr(int(n)) for n in neighbours.reshape(-1, 1)])
+    print "Distances: {}".format(dist)
     return knn

@@ -10,7 +10,7 @@
 # but WITHOUT ANY WARRANTY; without even the implied warranty of
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 # GNU General Public License for more details.
-#        
+#
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>
 
@@ -18,11 +18,11 @@ import sys
 import getopt
 
 from scan import *
-#from gui import gui
+# from gui import gui
 
 def print_help():
     print('''Usage: {0}: [OPTION] scan|text|learn file [file...]\
-          \nExtract string from image file 
+          \nExtract string from image file
           \nvalid argument may be:\
           \n    -h, --help: print this help message\
           \n    scan: scan for valid text in file'''.format(sys.argv[0]))
@@ -41,9 +41,9 @@ if __name__=="__main__":
             scantext(filename)
     elif len(args) >= 1 and args[0] in ("l", "learn"):
         if len(args) >= 2:
-            learnLetter(filename)
+            knn = learnLetter(filename)
         else:
-            learnLetter()
+            knn = learnLetter()
 #    else:
- #      gui(args)
+#       gui(args)
     sys.exit(0)
