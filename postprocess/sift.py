@@ -46,7 +46,7 @@ strtochrsym = {
 }
 
 def calculate(img1, img2):
-    detector = cv2.SURF()
+    detector = cv2.SIFT()
 
     # # detect keypoints
     kp1 = detector.detect(img1, None)
@@ -71,7 +71,8 @@ def calculate(img1, img2):
         val += matche.distance
     if (len(matches) > 0):
         val /= len(matches)
-    val = (1.0 - val) * 100.0
+
+    val = (1 - (val / 1000)) * 100.0
 
     return val
 
