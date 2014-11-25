@@ -5,7 +5,7 @@
 ## Login   <pprost@epitech.net>
 ## 
 ## Started on  Tue Nov 11 20:42:30 2014 Prost P.
-## Last update Mon Nov 24 22:38:37 2014 Prost P.
+## Last update Tue Nov 25 18:08:55 2014 Prost P.
 ##
 
 #        for i in range(0, len(contours)):
@@ -175,16 +175,17 @@ def bounding_word(img):
 #
 # tri
 #
-    phrases.sort(key=lambda x: min([key[0] for key in x]))
+    phrases.sort(key=lambda x: min([key[1] for key in x]))
     j = 0
+    ret = []
     for n in phrases:
         gxmin = min([x[0] for x in n])
         gymin = min([x[1] for x in n])
         gwmax = max([x[2] for x in n])
         ghmax = max([x[3] for x in n])
-        cv2.rectangle(img2,(gxmin, gymin),(gwmax,ghmax),(50,200,40),1)
-        ret.append([gxmin, gymin, gwmax, ghmax, True])
+        
         n.sort(key=lambda x: x[0])
+
         cv2.putText(img2, "{}".format(j), (gxmin - 30, gymin),
                     cv2.FONT_HERSHEY_COMPLEX_SMALL, 0.6, (0, 200, 100))
         k = 0
@@ -194,11 +195,16 @@ def bounding_word(img):
                     phrases.remove(n2)
                 if i in n2 and n2 != n:
                     n2.remove(i)
-            cv2.putText(img2, "{}".format(k), (i[0], i[1]),
+                cv2.putText(img2, "{}".format(k), (i[0], i[1]),
                     cv2.FONT_HERSHEY_COMPLEX_SMALL, 0.6, (0, 0, 255))
-            k += 1
+                k += 1
+            cv2.rectangle(img2,(gxmin, gymin),(gwmax,ghmax),(50,200,40),1)
+        return_phrase = []
+        return_phrase.append([img2[x[1]:x[3], x[0]:x[2]].copy() for x in n])
+        ret.append(return_phrase)
         j += 1
 
     cv2.imshow('test word bounding detection', img2)
     cv2.waitKey(0)
-    return phrases
+    return ret
+
