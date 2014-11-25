@@ -10,39 +10,39 @@ from preprocess import do
 path = "../example_dataset/step1/"
 
 strtochrsym = {
-	"amper": "&",
-	"apos": "'",
-	"arob": "@",
-	"bquote": "`",
-	"bslash": "\\",
-	"caret": "^",
-	"colon": ":",
-	"comma": ",",
-	"dollar": "$",
-	"equal": "=",
-	"exclmark": "!",
-	"gthan": ">",
-	"hyphen": "-",
-	"lcbracket": "{",
-	"lparen": "(",
-	"lsqbracket": "[",
-	"lthan": "<",
-	"num": "#",
-	"pcent": "%",
-	"pipe": "|",
-	"plus": "+",
-	"point": ".",
-	"questmark": "?",
-	"quotmark": "\"",
-	"rcbracket": "}",
-	"rparen": ")",
-	"rsqbracket": "]",
-	"scolon": ";",
-	"slash": "/",
-	"space": " ",
-	"star": "*",
-	"tilde": "~",
-	"under": "_"
+    "amper": "&",
+    "apos": "'",
+    "arob": "@",
+    "bquote": "`",
+    "bslash": "\\",
+    "caret": "^",
+    "colon": ":",
+    "comma": ",",
+    "dollar": "$",
+    "equal": "=",
+    "exclmark": "!",
+    "gthan": ">",
+    "hyphen": "-",
+    "lcbracket": "{",
+    "lparen": "(",
+    "lsqbracket": "[",
+    "lthan": "<",
+    "num": "#",
+    "pcent": "%",
+    "pipe": "|",
+    "plus": "+",
+    "point": ".",
+    "questmark": "?",
+    "quotmark": "\"",
+    "rcbracket": "}",
+    "rparen": ")",
+    "rsqbracket": "]",
+    "scolon": ";",
+    "slash": "/",
+    "space": " ",
+    "star": "*",
+    "tilde": "~",
+    "under": "_"
 }
 
 def calculate(img1, img2):
@@ -76,7 +76,6 @@ def calculate(img1, img2):
     return val
 
 def getAllImageData():
-    os.chdir(path)
     collect = {}
     for f in glob.glob("*.bmp"):
         tmp = f.split('.')
@@ -98,6 +97,8 @@ def getAllImageData():
     return collect
 
 def getCharacter(img):
+    old_path = os.getcwd()
+    os.chdir(path)
     db = getAllImageData()
     best = {}
     for key, value in db.items():
@@ -105,6 +106,10 @@ def getCharacter(img):
         gray= cv2.cvtColor(tmp,cv2.COLOR_BGR2GRAY)
         s = calculate(img, gray)
         best[s] = key
+    os.chdir(old_path)
     sorted_best = sorted(best.items(), key=operator.itemgetter(0))
     best = list(reversed(sorted_best))
-    return best[:5]
+    ret = best[:5]
+    if (len(ret) < 5):
+        return []
+    return ret
