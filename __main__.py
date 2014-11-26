@@ -25,19 +25,25 @@ def print_help():
           \nExtract string from image file
           \nvalid argument may be:\
           \n    -h, --help: print this help message\
+          \n    -d, --dir: dataset directory\
           \n    scan: scan for valid text in file'''.format(sys.argv[0]))
     sys.exit(0)
 
 if __name__=="__main__":
-    optlist, args = getopt.getopt(sys.argv[1:], "h", ["help",])
-    knn = learnLetter()
+    optlist, args = getopt.getopt(sys.argv[1:], "hd:", ["help", "dir"])
+    direc = "dataset"
     for o, a in optlist:
-        if o in ("-h", "--help") :
+        if o in ("-h", "--help"):
             print_help()
+        if o in ("-d", "--dir"):
+            direc = a
     if len(args) >= 2 and args[0] in ("s", "scan"):
+        knn = learnLetter()
         for filename in args[1:]:
             scan(knn, filename)
     elif len(args) >= 2 and args[0] in ("t", "text"):
+        print(direc)
+        knn = learnLetter(directory=direc)
         for filename in args[1:]:
             scantext(knn, filename)
     elif len(args) >= 1 and args[0] in ("l", "learn"):
