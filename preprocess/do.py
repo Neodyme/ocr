@@ -29,7 +29,6 @@ def crop(img):
                     min_width = i
                 if i > max_width:
                     max_width = i
-#    print(min_height, max_height, min_width, max_width)
     img_crop = img[min_width:max_width, min_height:max_height]
 #    cv2.imshow('preprocess: after crop', img_crop)
 #    cv2.waitKey(0)

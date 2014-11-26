@@ -3,6 +3,7 @@
 
 import cv2
 import preprocess
+import postprocess
 import numpy
 from os import path
 from glob import glob
@@ -80,12 +81,14 @@ def findLetter(knn, lines):
                 print img
                 ret, result, neighbours, dist = knn.find_nearest(numpy.float32(img), 5)
                 #                    print "Expected char: {}".format(test_char)
-                
+                result2 = postprocess.sift.getCharacter(c)
+#                for r in result:
+ #                   if r[0] in 
                 print "Result: {}".format(chr(int(ret)))
                 print "(result: {})".format([chr(int(r)) for r in result])
                 print "Neighbours: {}".format([chr(int(n)) for n in neighbours.reshape(-1, 1)])
                 print "Distances: {}".format(dist)
-#                cv2.imshow('3end letter bounding detection', c)
-#                cv2.waitKey(0)
+                cv2.imshow('3end letter bounding detection', c)
+                cv2.waitKey(0)
 #                cv2.imshow('2end letter bounding detection', preprocess.process_char(c))
 #                cv2.waitKey(0)

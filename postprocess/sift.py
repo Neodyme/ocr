@@ -4,10 +4,10 @@ import glob
 import os
 import sys
 import operator
-sys.path.insert(0, '../')
+sys.path.insert(0, './')
 from preprocess import do
 
-path = "../example_dataset/step1/"
+path = "./example_dataset/step1/"
 
 strtochrsym = {
     "amper": "&",

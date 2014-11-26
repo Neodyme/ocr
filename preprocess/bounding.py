@@ -165,8 +165,8 @@ def bounding_word(img, filename):
         for a in ret:
              gymin = min([x[1] for x in n])             
              ghmax = max([x[3] for x in n])
-             if (b[1] + 10 <= a[3] and b[1] - 10 >= a[1] or \
-                b[3] <= a[3] and b[3] >= a[1]) and abs(((ghmax - gymin)/2) - ((a[3] - a[1]) / 2)) < 10 :
+             if (b[1] <= a[3] and b[1] >= a[1] or \
+                b[3] <= a[3] and b[3] >= a[1]) and abs(((ghmax - gymin)/2) - ((a[3] - a[1]) / 2)) < 30:
                 n.append(a)
                 used.append(a)
         used.append(b)
@@ -203,5 +203,7 @@ def bounding_word(img, filename):
         return_phrase = ([img3[(x[1] - 2):(x[3] + 2), (x[0] - 2):(x[2] + 2)].copy() for x in n])
         ret.append(return_phrase)
         j += 1
+    cv2.imshow('test word bounding detection', img2)
+    cv2.waitKey(0)
     return ret
 
