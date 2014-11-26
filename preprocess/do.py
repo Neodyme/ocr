@@ -39,6 +39,8 @@ def crop(img):
 #
 # Resize the image to a fixed dimension define by TARGET_WIDTH and TARGET_HEIGHT
 def resize(img):
+    if img.size <= 0:
+        return [[-1]]
     img_resize = cv2.resize(img, (TARGET_WIDTH, TARGET_HEIGHT))
     return img_resize
 
@@ -61,7 +63,6 @@ def threshold(img):
 
     blur = cv2.GaussianBlur(img,(1,1),0)
     ret3,th3 = cv2.threshold(blur,0,255,cv2.THRESH_BINARY+cv2.THRESH_OTSU)
-
 #    cv2.imshow('preprocess: after bw', th3)
 #    cv2.waitKey(0)
 
@@ -80,11 +81,11 @@ def process_text_graysacale(filename):
     return img
 
 
-def process_char(filename):
-    img = cv2.imread(filename, cv2.CV_LOAD_IMAGE_GRAYSCALE)
+def process_char(img):
+    img = threshold(img)
+    img = erode(img)
     img = threshold(img)
     img = crop(img)
     img = resize(img)
-    img = erode(img)
     return img
     

@@ -36,17 +36,17 @@ def clean_image(img, box, listBox):
         cleanX = box[0] - otherBox[0]
         for x in range(max(otherBox[0] - box[0], 0), min((otherBox[0] + otherBox[2]) - box[0], box[2])):
             for y in range(max(otherBox[1] - box[1], 0), min((otherBox[1] + otherBox[3]) - box[1], box[3])):
-                img[y][x] = [255, 255, 255]
+                img[y][x] = 255
         i += 1
     return img
 
 def sortListBox(listBox):
-    return sorted(listBox, key=lambda box:box[0])
+    return sorted(listBox, key=lambda box:((box[0] + box[0] + box[2]) / 2))
 
 def bounding_letter(img):
     contours,hierarchy = cv2.findContours(do.threshold(img.copy()),cv2.RETR_TREE,cv2.CHAIN_APPROX_SIMPLE)
 #    print(contours)
-    img2 = cv2.cvtColor(img,cv2.COLOR_GRAY2RGB)
+    img2 = img.copy()
     img3 = cv2.cvtColor(img,cv2.COLOR_GRAY2RGB)
     letter = []
     retBox = []
@@ -68,9 +68,9 @@ def bounding_letter(img):
  #       cv2.imshow('end letter bounding detection', img3)
 #        cv2.waitKey(0)
 
-#    for let in letter:
-#        cv2.imshow('2end letter bounding detection', let)
- #       cv2.waitKey(0)
+ #   for let in letter:
+  #      cv2.imshow('2end letter bounding detection', let)
+   #     cv2.waitKey(0)
 
     return letter, retBox
 
