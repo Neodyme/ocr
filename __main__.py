@@ -30,20 +30,17 @@ def print_help():
 
 if __name__=="__main__":
     optlist, args = getopt.getopt(sys.argv[1:], "h", ["help",])
+    knn = learnLetter()
     for o, a in optlist:
         if o in ("-h", "--help") :
             print_help()
     if len(args) >= 2 and args[0] in ("s", "scan"):
         for filename in args[1:]:
-            scan(filename)
+            scan(knn, filename)
     elif len(args) >= 2 and args[0] in ("t", "text"):
         for filename in args[1:]:
-            scantext(filename)
-    elif len(args) >= 1 and args[0] in ("l", "learn"):
-        if len(args) >= 2:
-            knn = learnLetter(filename)
-        else:
-            knn = learnLetter()
+            scantext(knn, filename)
+
 #    else:
 #       gui(args)
     sys.exit(0)

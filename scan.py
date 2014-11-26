@@ -12,21 +12,32 @@ from os import path
 from glob import glob
 #
 # cycle de scan de caracteres uniques
-def scan(filename):
-    img = preprocess.process_char(filename)
+def scan(knn, filename):
+    img = cv2.imread(filename, cv2.CV_LOAD_IMAGE_GRAYSCALE)
+    img = preprocess.process_char(img)
+    cv2.imshow('2end letter bounding detection', img)
+    img = [img.reshape(-1, 1)]
+    print img
+    ret, result, neighbours, dist = knn.find_nearest(numpy.float32(img), 5)
+    print "Result: {}".format(chr(int(ret)))
+    print "(result: {})".format([chr(int(r)) for r in result])
+    print "Neighbours: {}".format([chr(int(n)) for n in neighbours.reshape(-1, 1)])
+    print "Distances: {}".format(dist)
+    cv2.waitKey(0)
     return
 #
 # cycle de scan de text complet
-def scantext(filename):
+def scantext(knn, filename):
     lines = preprocess.bounding_word(cv2.imread(filename, cv2.CV_LOAD_IMAGE_GRAYSCALE), filename)
     l = []
     for line in lines:
         words = []
         for word in line:
-            chars = preprocess.bounding_letter(word)
+            chars, _ = preprocess.bounding_letter(word)
             words.append(chars)
-        l.append(words)
-    return l
+            l.append(words)
+    findLetter(knn, l)
+    return
 
 #
 # cycle d'apprentissage de lettre
@@ -37,7 +48,10 @@ def learnLetter(directory = "./dataset/"):
     i = 0
     for filename in glob(path.join(directory, '*.bmp')):
         # print(filename)
-        imgList.append(preprocess.process_char(filename).reshape(-1, 1))
+        print(cv2.imread(filename, cv2.CV_LOAD_IMAGE_GRAYSCALE).reshape(-1, 1))
+#        cv2.imshow('2end letter bounding detection', cv2.imread(filename, cv2.CV_LOAD_IMAGE_GRAYSCALE))
+ #       cv2.waitKey(0)
+        imgList.append(preprocess.process_char(cv2.imread(filename, cv2.CV_LOAD_IMAGE_GRAYSCALE)).reshape(-1, 1))
         # print(path.basename(filename)[0])
         imgTag.append(ord(path.basename(filename)[0]))
         i += 1
@@ -48,13 +62,21 @@ def learnLetter(directory = "./dataset/"):
 
 def findLetter(knn, lines):
     for line in lines:
-        for words in line:
-            for word in words:
-                for c in word:
-                    img = c.reshape(-1, 1)
-                    ret, result, neighbours, dist = knn.find_nearest(numpy.float32(img), 5)
-                    print "Expected char: {}".format(test_char)
-                    print "Result: {}".format(chr(int(ret)))
-                    print "(result: {})".format([chr(int(r)) for r in result])
-                    print "Neighbours: {}".format([chr(int(n)) for n in neighbours.reshape(-1, 1)])
-                    print "Distances: {}".format(dist)
+        for word in line:
+            for c in word:
+                print c
+                img = preprocess.process_char(c)
+                if img[0][0] == -1:
+                    continue
+                img = [img.reshape(-1, 1)]
+                print img
+                ret, result, neighbours, dist = knn.find_nearest(numpy.float32(img), 5)
+                #                    print "Expected char: {}".format(test_char)
+                print "Result: {}".format(chr(int(ret)))
+                print "(result: {})".format([chr(int(r)) for r in result])
+                print "Neighbours: {}".format([chr(int(n)) for n in neighbours.reshape(-1, 1)])
+                print "Distances: {}".format(dist)
+                cv2.imshow('3end letter bounding detection', c)
+                cv2.waitKey(0)
+                cv2.imshow('2end letter bounding detection', preprocess.process_char(c))
+                cv2.waitKey(0)
