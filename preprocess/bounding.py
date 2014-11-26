@@ -193,15 +193,20 @@ def bounding_word(img, filename):
                 if len(n2) == 0:
                     phrases.remove(n2)
                 if i in n2 and n2 != n:
-                    n2.remove(i)
-                cv2.putText(img2, "{}".format(k), (i[0], i[1]),
+                    n2.remove(i) 
+                    print("removin'")
+                    cv2.putText(img2, "{}".format(k), (i[0], i[1]),
                     cv2.FONT_HERSHEY_COMPLEX_SMALL, 0.6, (0, 0, 255))
                 k += 1
             cv2.rectangle(img2,(gxmin, gymin),(gwmax,ghmax),(50,200,40),1)
         return_phrase = ([img3[(x[1] - 2):(x[3] + 2), (x[0] - 2):(x[2] + 2)].copy() for x in n])
         ret.append(return_phrase)
+        for i in return_phrase:
+            print str(j) + ", " + str(i) 
+            cv2.imshow('word', i)
+            cv2.waitKey(0)
+            
         j += 1
-
 
     cv2.imshow('test word bounding detection', img2)
     cv2.waitKey(0)
