@@ -31,7 +31,7 @@ def scantext(knn, filename):
         for word in line:
             chars, _ = preprocess.bounding_letter(word)
             words.append(chars)
-            l.append(words)
+        l.append(words)
     findLetter(knn, l)
     return
 
@@ -53,7 +53,7 @@ def learnLetter(directory = "./dataset/"):
     i = 0
     for filename in glob(path.join(directory, '*.bmp')):
         # print(filename)
-        print(cv2.imread(filename, cv2.CV_LOAD_IMAGE_GRAYSCALE).reshape(-1, 1))
+       # print(cv2.imread(filename, cv2.CV_LOAD_IMAGE_GRAYSCALE).reshape(-1, 1))
 #        cv2.imshow('2end letter bounding detection', cv2.imread(filename, cv2.CV_LOAD_IMAGE_GRAYSCALE))
  #       cv2.waitKey(0)
         imgList.append(preprocess.process_char(cv2.imread(filename, cv2.CV_LOAD_IMAGE_GRAYSCALE)).reshape(-1, 1))
@@ -77,6 +77,7 @@ def findLetter(knn, lines):
                 print img
                 ret, result, neighbours, dist = knn.find_nearest(numpy.float32(img), 5)
                 #                    print "Expected char: {}".format(test_char)
+                
                 print "Result: {}".format(chr(int(ret)))
                 print "(result: {})".format([chr(int(r)) for r in result])
                 print "Neighbours: {}".format([chr(int(n)) for n in neighbours.reshape(-1, 1)])
