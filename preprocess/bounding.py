@@ -4,9 +4,6 @@
 ## Made by  Prost P.
 ## Login   <pprost@epitech.net>
 ## 
-## Started on  Tue Nov 11 20:42:30 2014 Prost P.
-## Last update Wed Nov 26 11:04:13 2014 Prost P.
-##
 
 #        for i in range(0, len(contours)):
 #            if :
