@@ -43,7 +43,11 @@ if __name__=="__main__":
         if len(args) >= 2:
             knn = learnLetter(filename)
         else:
-            knn = learnLetter()
+            learnLetter()
+    elif len(args) >= 1 and args[0] in ("f", "format"):
+        if len(args) >= 2:
+            for filename in args[1:]:
+                splitDataset(filename)
 #    else:
 #       gui(args)
     sys.exit(0)

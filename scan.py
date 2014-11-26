@@ -1,9 +1,5 @@
 #!/usr/bin/env python2.7
 #-*- encoding: utf-8 -*-
-#
-# Started on  Thu Oct 30 14:46:24 2014 Prost P.
-## Last update Tue Nov 25 20:56:08 2014 Prost P.
-#
 
 import cv2
 import preprocess
@@ -28,6 +24,15 @@ def scantext(filename):
         l.append(words)
     return l
 
+def splitDataset(filename):
+    img, _ = preprocess.bounding_letter(preprocess.threshold(cv2.imread(filename, cv2.CV_LOAD_IMAGE_GRAYSCALE)))
+    let = (path.basename(filename)).split(".")[0]
+    i = 0
+    print("Filing dataset with letter '{}'".format(let))
+    for letter in img:
+        if letter.shape[0] > 5 and letter.shape[1] > 5:
+            cv2.imwrite("./dataset/" + let + str(i) + ".bmp",  letter)
+            i += 1
 #
 # cycle d'apprentissage de lettre
 def learnLetter(directory = "./dataset/"):

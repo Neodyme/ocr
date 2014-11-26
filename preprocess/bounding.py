@@ -5,7 +5,7 @@
 ## Login   <pprost@epitech.net>
 ## 
 ## Started on  Tue Nov 11 20:42:30 2014 Prost P.
-## Last update Tue Nov 25 21:03:09 2014 Prost P.
+## Last update Wed Nov 26 11:04:13 2014 Prost P.
 ##
 
 #        for i in range(0, len(contours)):
@@ -47,14 +47,12 @@ def sortListBox(listBox):
     return sorted(listBox, key=lambda box:box[0])
 
 def bounding_letter(img):
-    print("test")
     contours,hierarchy = cv2.findContours(do.threshold(img.copy()),cv2.RETR_TREE,cv2.CHAIN_APPROX_SIMPLE)
 #    print(contours)
     img2 = cv2.cvtColor(img,cv2.COLOR_GRAY2RGB)
     img3 = cv2.cvtColor(img,cv2.COLOR_GRAY2RGB)
     letter = []
     retBox = []
-    print(hierarchy)
     for i in range(0, len(contours) - 1):
         if hierarchy[0][i][3] != 0 and hierarchy[0][i][2] == -1:
             continue
@@ -67,7 +65,7 @@ def bounding_letter(img):
         #    print(box)
         retBox = sortListBox(retBox)
     for box in retBox:
-        letter.append(clean_image(img2.copy()[box[1]:(box[1] + box[3]), box[0]:(box[0] + box[2])], box, retBox))
+        letter.append(clean_image(img2[box[1]:(box[1] + box[3]), box[0]:(box[0] + box[2])].copy(), box, retBox))
 #        cv2.rectangle(img2, (box[0], box[1]), (box[0] + box[2], box[1] + box[3]), (0,0,200),1)
         cv2.rectangle(img3, (box[0], box[1]), (box[0] + box[2], box[1] + box[3]), (0,0,200),1)
  #       cv2.imshow('end letter bounding detection', img3)
@@ -142,7 +140,6 @@ def bounding_word(img, filename):
                 n.append(a)
                 used.append(a)
         used.append(b)
-
 
     ret = []
     ret2 = []
