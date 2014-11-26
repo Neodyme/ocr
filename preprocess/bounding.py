@@ -165,8 +165,8 @@ def bounding_word(img, filename):
         for a in ret:
              gymin = min([x[1] for x in n])             
              ghmax = max([x[3] for x in n])
-             if (b[1] <= a[3] and b[1] >= a[1] or \
-                b[3] <= a[3] and b[3] >= a[1]) and abs(((ghmax - gymin)/2) - ((a[3] - a[1]) / 2)) < 30 :
+             if (b[1] + 10 <= a[3] and b[1] - 10 >= a[1] or \
+                b[3] <= a[3] and b[3] >= a[1]) and abs(((ghmax - gymin)/2) - ((a[3] - a[1]) / 2)) < 10 :
                 n.append(a)
                 used.append(a)
         used.append(b)
@@ -177,6 +177,7 @@ def bounding_word(img, filename):
     phrases.sort(key=lambda x: min([key[1] for key in x]))
     j = 0
     ret = []
+    n = []
     for n in phrases:
         gxmin = min([x[0] for x in n])
         gymin = min([x[1] for x in n])
@@ -188,27 +189,19 @@ def bounding_word(img, filename):
         cv2.putText(img2, "{}".format(j), (gxmin - 30, gymin),
                     cv2.FONT_HERSHEY_COMPLEX_SMALL, 0.6, (0, 200, 100))
         k = 0
+        return_phrase = []
         for i in n:
             for n2 in phrases:
                 if len(n2) == 0:
                     phrases.remove(n2)
                 if i in n2 and n2 != n:
                     n2.remove(i) 
-#                    print("removin'")
                     cv2.putText(img2, "{}".format(k), (i[0], i[1]),
                     cv2.FONT_HERSHEY_COMPLEX_SMALL, 0.6, (0, 0, 255))
                 k += 1
             cv2.rectangle(img2,(gxmin, gymin),(gwmax,ghmax),(50,200,40),1)
         return_phrase = ([img3[(x[1] - 2):(x[3] + 2), (x[0] - 2):(x[2] + 2)].copy() for x in n])
         ret.append(return_phrase)
- #       for i in return_phrase:
-  #          print str(j) + ", " + str(i) 
-   #         cv2.imshow('word', i)
-    #        cv2.waitKey(0)
-            
         j += 1
-
-    cv2.imshow('test word bounding detection', img2)
-    cv2.waitKey(0)
     return ret
 
