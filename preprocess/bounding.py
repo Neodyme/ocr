@@ -166,7 +166,7 @@ def bounding_word(img, filename):
              gymin = min([x[1] for x in n])             
              ghmax = max([x[3] for x in n])
              if (b[1] <= a[3] and b[1] >= a[1] or \
-                b[3] <= a[3] and b[3] >= a[1]) and abs(((ghmax - gymin)/2) - ((a[3] - a[1]) / 2)) < 30 :
+                b[3] <= a[3] and b[3] >= a[1]) and abs(((ghmax - gymin)/2) - ((a[3] - a[1]) / 2)) < 30:
                 n.append(a)
                 used.append(a)
         used.append(b)

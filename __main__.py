@@ -18,7 +18,7 @@ import sys
 import getopt
 
 from scan import *
-# from gui import gui
+import gui
 
 def print_help():
     print('''Usage: {0}: [OPTION] scan|text|learn file [file...]\
@@ -55,6 +55,6 @@ if __name__=="__main__":
         if len(args) >= 2:
             for filename in args[1:]:
                 splitDataset(filename)
-#    else:
-#       gui(args)
+    else:
+       gui.Gui(args, directory=direc)
     sys.exit(0)
