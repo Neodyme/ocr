@@ -192,8 +192,8 @@ def bounding_word(img, filename):
         ret.append(return_phrase)
         j += 1
 
-#    cv2.imshow('word bounding detection', img2)
-#    cv2.waitKey(0)
+    cv2.imshow('word bounding detection', img2)
+    cv2.waitKey(0)
           
     return ret
     
