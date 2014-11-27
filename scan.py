@@ -13,8 +13,6 @@ def scan(knn, filename, p):
     img = cv2.imread(filename, cv2.CV_LOAD_IMAGE_GRAYSCALE)
     c = img.copy()
     img = preprocess.process_char(img)
-    #    cv2.imshow('2end letter bounding detection', img)
-    #    print img
     if img[0][0] == -1:
         return
     img = [img.reshape(-1, 1)]
@@ -50,9 +48,9 @@ def scan(knn, filename, p):
         res = neighbours[0][index]
     else:
         res = neighbours[0][0]
+    print(chr(int(res)))
     return chr(int(res))
 
->>>>>>> ajout sift/surf pour post-process
 #
 # cycle de scan de text complet
 def scantext(knn, filename, p):
@@ -84,17 +82,10 @@ def learnLetter(directory = "./dataset/"):
     i = 0
     files = glob(path.join(directory, '*.bmp'))
     for filename in files:
-        # print(filename)
         print("learning {0:.02%} ".format(float(i) / float(len (files))))
-#        print(cv2.imread(filename, cv2.CV_LOAD_IMAGE_GRAYSCALE).reshape(-1, 1))
-#        cv2.imshow('2end letter bounding detection', cv2.imread(filename, cv2.CV_LOAD_IMAGE_GRAYSCALE))
- #       cv2.waitKey(0)
         imgList.append(preprocess.process_char(cv2.imread(filename, cv2.CV_LOAD_IMAGE_GRAYSCALE)).reshape(-1, 1))
-        # print(path.basename(filename)[0])
         imgTag.append(ord(path.basename(filename)[0]))
         i += 1
-    # print(numpy.array(imgList).astype(numpy.float64))
-    # print(numpy.array(imgTag).astype(numpy.float64))
     knn.train(numpy.float32(imgList), numpy.float32(imgTag))
     return knn
 
@@ -142,6 +133,8 @@ def findLetter(knn, lines, p):
                     res = neighbours[0][index]
                 else:
                     res = neighbours[0][0]
+                message += chr(int(res))
+                print(message)
             message += " "
         message += "\n"
     print (message)

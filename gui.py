@@ -49,19 +49,19 @@ class Gui:
         return
 
     def step1(self):
-        self.text.insert(Tkinter.END, scan(self.knn, self.files[self.i]))
+        self.text.insert(Tkinter.END, scan(self.knn, self.files[self.i], self.p))
         self.root.update()
         
     def step2(self):
-        self.text.insert(Tkinter.END, scantext(self.knn, self.files[self.i]))
+        self.text.insert(Tkinter.END, scantext(self.knn, self.files[self.i], self.p))
         self.root.update()
 
-    def __init__(self, opts, directory="dataset"):
+    def __init__(self, opts, postp, directory="dataset"):
         self.root = Tkinter.Tk()
         self.files = opts
         self.i = 0
         self.knn = learnLetter(directory)
-
+        self.p = postp
 
         menubar = Tkinter.Menu(self.root)
         filemenu = Tkinter.Menu(menubar, tearoff=0)

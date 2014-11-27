@@ -5,10 +5,6 @@
 ## Login   <pprost@epitech.net>
 ## 
 
-#        for i in range(0, len(contours)):
-#            if :
-#                test = True
-#                break
 
 import cv2
 import do
@@ -45,7 +41,6 @@ def sortListBox(listBox):
 
 def bounding_letter(img):
     contours,hierarchy = cv2.findContours(do.threshold(img.copy()),cv2.RETR_TREE,cv2.CHAIN_APPROX_SIMPLE)
-#    print(contours)
     img2 = img.copy()
     img3 = cv2.cvtColor(img,cv2.COLOR_GRAY2RGB)
     letter = []
@@ -53,20 +48,13 @@ def bounding_letter(img):
     for i in range(0, len(contours) - 1):
         if hierarchy[0][i][3] != 0 and hierarchy[0][i][2] == -1:
             continue
-#        cv2.drawContours(img2, contours, i, (0,0,0), 3)
         box = cv2.boundingRect(cv2.approxPolyDP(contours[i], 3, True))
         retBox.append(box)
-        #        print(letter[len(letter) - 1])
-        #        cv2.imshow('letter bounding detection', letter[len(letter) - 1])
-        #        cv2.waitKey(0)
-        #    print(box)
+
         retBox = sortListBox(retBox)
     for box in retBox:
         letter.append(clean_image(img2[box[1]:(box[1] + box[3]), box[0]:(box[0] + box[2])].copy(), box, retBox))
-#        cv2.rectangle(img2, (box[0], box[1]), (box[0] + box[2], box[1] + box[3]), (0,0,200),1)
         cv2.rectangle(img3, (box[0], box[1]), (box[0] + box[2], box[1] + box[3]), (0,0,200),1)
- #       cv2.imshow('end letter bounding detection', img3)
-#        cv2.waitKey(0)
 
  #   for let in letter:
   #      cv2.imshow('2end letter bounding detection', let)
@@ -88,7 +76,7 @@ def bounding_word(img, filename):
     gr = []
     used = []
     for b in box:
-        if b[0] < 10 or (b[1] < 10 and b[3] < 10):
+        if b[0] < 10:
             continue
         if b in used:
             for n in gr:
@@ -98,7 +86,7 @@ def bounding_word(img, filename):
             n = [b]
             gr.append(n)
         for a in box:
-            if (abs(b[0] - (a[0] + a[2])) < 15 or abs(a[0] - (b[0] + b[2])) < 15)\
+            if (abs(b[0] - (a[0] + a[2])) < 5 or abs(a[0] - (b[0] + b[2])) < 5)\
                and (b[1] <= a[1] + a[3] and b[1] >= a[1] or \
                     b[1] + b[3] <= a[1] + a[3] and b[1] + b[3] >= a[1]):
                 n.append(a)

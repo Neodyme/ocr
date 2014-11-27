@@ -58,5 +58,5 @@ if __name__=="__main__":
             for filename in args[1:]:
                 splitDataset(filename)
     else:
-       gui.Gui(args, directory=direc)
+       gui.Gui(args, p, directory=direc)
     sys.exit(0)
