@@ -11,16 +11,15 @@ from glob import glob
 def scan(knn, filename):
     img = cv2.imread(filename, cv2.CV_LOAD_IMAGE_GRAYSCALE)
     img = preprocess.process_char(img)
-#    cv2.imshow('2end letter bounding detection', img)
-#    img = [img.reshape(-1, 1)]
+    img = [img.reshape(-1, 1)]
 #    print img
     ret, result, neighbours, dist = knn.find_nearest(numpy.float32(img), 5)
     print "Result: {}".format(chr(int(ret)))
     print "(result: {})".format([chr(int(r)) for r in result])
     print "Neighbours: {}".format([chr(int(n)) for n in neighbours.reshape(-1, 1)])
     print "Distances: {}".format(dist)
-    cv2.waitKey(0)
-    return
+#    cv2.waitKey(0)
+    return chr(int(ret))
 #
 # cycle de scan de text complet
 def scantext(knn, filename):
@@ -32,9 +31,8 @@ def scantext(knn, filename):
             chars, _ = preprocess.bounding_letter(word)
             words.append(chars)
         l.append(words)
-    findLetter(knn, l)
-
-    return
+    return findLetter(knn, l)
+    
 
 def splitDataset(filename):
     img, _ = preprocess.bounding_letter(preprocess.threshold(cv2.imread(filename, cv2.CV_LOAD_IMAGE_GRAYSCALE)))
@@ -69,6 +67,8 @@ def learnLetter(directory = "./dataset/"):
     return knn
 
 def findLetter(knn, lines):
+
+    message = ""
     for line in lines:
         for word in line:
             for c in word:
@@ -77,15 +77,23 @@ def findLetter(knn, lines):
                 if img[0][0] == -1:
                     continue
                 img = [img.reshape(-1, 1)]
-                print img
+#                cv2.imshow('2end letter bounding detection', c)
+#                cv2.waitKey(0)
+
                 ret, result, neighbours, dist = knn.find_nearest(numpy.float32(img), 5)
                 #                    print "Expected char: {}".format(test_char)
-                
+                message += chr(int(neighbours.reshape(-1, 1)[0]))
                 print "Result: {}".format(chr(int(ret)))
                 print "(result: {})".format([chr(int(r)) for r in result])
                 print "Neighbours: {}".format([chr(int(n)) for n in neighbours.reshape(-1, 1)])
                 print "Distances: {}".format(dist)
-#                cv2.imshow('3end letter bounding detection', c)
+            message += " "
+        message += "\n"
+
+
+    print (message)
+    return message
+    #                cv2.imshow('3end letter bounding detection', c)
 #                cv2.waitKey(0)
 #                cv2.imshow('2end letter bounding detection', preprocess.process_char(c))
 #                cv2.waitKey(0)
