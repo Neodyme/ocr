@@ -30,27 +30,42 @@ def print_help():
     sys.exit(0)
 
 if __name__=="__main__":
-    optlist, args = getopt.getopt(sys.argv[1:], "hd:", ["help", "dir"])
+    optlist, args = getopt.getopt(sys.argv[1:], "hdk:", ["help", "dir", "knn"])
     direc = "dataset"
+    knn = None
     for o, a in optlist:
         if o in ("-h", "--help"):
             print_help()
         if o in ("-d", "--dir"):
             direc = a
+        if o in ("-k", "--knn"):
+            knn = a
     if len(args) >= 2 and args[0] in ("s", "scan"):
-        knn = learnLetter()
+        if not knn:
+            knn = learnLetter()
+        else:
+            knn = read_pickled_knn(knn)
         for filename in args[1:]:
             scan(knn, filename)
     elif len(args) >= 2 and args[0] in ("t", "text"):
         print(direc)
-        knn = learnLetter(directory=direc)
+        if not knn:
+            knn = learnLetter(directory=direc)
+        else:
+            knn = read_pickled_knn(knn)
         for filename in args[1:]:
             scantext(knn, filename)
     elif len(args) >= 1 and args[0] in ("l", "learn"):
         if len(args) >= 2:
+            print "1"
             knn = learnLetter(filename)
         else:
+            print "2"
             learnLetter()
+        output = "data.pkl"
+        if len(args) >= 3:
+            output = args[1]
+        pickle_knn(output, knn)
     elif len(args) >= 1 and args[0] in ("f", "format"):
         if len(args) >= 2:
             for filename in args[1:]:

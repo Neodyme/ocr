@@ -5,6 +5,7 @@ import cv2
 import preprocess
 import postprocess
 import numpy
+import pickle
 from os import path
 from glob import glob
 #
@@ -83,7 +84,7 @@ def findLetter(knn, lines):
                 #                    print "Expected char: {}".format(test_char)
                 result2 = postprocess.sift.getCharacter(c)
 #                for r in result:
- #                   if r[0] in 
+ #                   if r[0] in
                 print "Result: {}".format(chr(int(ret)))
                 print "(result: {})".format([chr(int(r)) for r in result])
                 print "Neighbours: {}".format([chr(int(n)) for n in neighbours.reshape(-1, 1)])
@@ -92,3 +93,17 @@ def findLetter(knn, lines):
                 cv2.waitKey(0)
 #                cv2.imshow('2end letter bounding detection', preprocess.process_char(c))
 #                cv2.waitKey(0)
+
+
+def pickle_knn(filename, knn):
+    output = open(filename, 'wb')
+    pickle.dump(knn, output)
+    output.close()
+
+
+def read_pickled_knn(filename):
+    pkl_file = open(filename, 'rb')
+    knn = pickle.load(pkl_file)
+    pkl_file.close()
+    return knn
+
