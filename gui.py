@@ -42,6 +42,11 @@ class Gui:
             self.i = (self.i + 1) % len(self.files)
             self.refresh()
         return
+    def prevfile(self):
+        if len(self.files) > 0:
+            self.i = (self.i - 1) % len(self.files)
+            self.refresh()
+        return
 
     def step1(self):
         self.text.insert(Tkinter.END, scan(self.knn, self.files[self.i]))
@@ -71,9 +76,10 @@ class Gui:
         self.text.grid(row=1, column=7, columnspan=4)
 
         b = Tkinter.Button(self.root, text="Open File", command=self.openfile).grid(row=0, column=0, columnspan=1)
-        c = Tkinter.Button(self.root, text="Next File", command=self.nextfile).grid(row=0, column=1, columnspan=1)
-        d = Tkinter.Button(self.root, text="Step2", command=self.step2).grid(row=0, column=3, columnspan=1)
-        e = Tkinter.Button(self.root, text="Step1", command=self.step1).grid(row=0, column=4, columnspan=1)
+        c = Tkinter.Button(self.root, text="Prev File", command=self.prevfile).grid(row=0, column=1, columnspan=1)
+        c = Tkinter.Button(self.root, text="Next File", command=self.nextfile).grid(row=0, column=2, columnspan=1)
+        d = Tkinter.Button(self.root, text="Step2", command=self.step2).grid(row=0, column=4, columnspan=1)
+        e = Tkinter.Button(self.root, text="Step1", command=self.step1).grid(row=0, column=5, columnspan=1)
 
         self.root.config(menu=menubar)
     #label_image.place(x=0,y=0,width=150,height=150)
