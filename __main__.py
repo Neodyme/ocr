@@ -30,7 +30,7 @@ def print_help():
     sys.exit(0)
 
 if __name__=="__main__":
-    optlist, args = getopt.getopt(sys.argv[1:], "hdk:", ["help", "dir", "knn"])
+    optlist, args = getopt.getopt(sys.argv[1:], "hd:k:", ["help", "dir", "knn"])
     direc = "dataset"
     knn = None
     for o, a in optlist:
@@ -56,12 +56,7 @@ if __name__=="__main__":
         for filename in args[1:]:
             scantext(knn, filename)
     elif len(args) >= 1 and args[0] in ("l", "learn"):
-        if len(args) >= 2:
-            print "1"
-            knn = learnLetter(filename)
-        else:
-            print "2"
-            learnLetter()
+        knn = learnLetter(directory=direc)
         output = "data.pkl"
         if len(args) >= 3:
             output = args[1]

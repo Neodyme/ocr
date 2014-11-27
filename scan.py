@@ -96,6 +96,7 @@ def findLetter(knn, lines):
 
 
 def pickle_knn(filename, knn):
+    cv2.KNearest()
     output = open(filename, 'wb')
     pickle.dump(knn, output)
     output.close()
