@@ -56,11 +56,7 @@ if __name__=="__main__":
         for filename in args[1:]:
             scantext(knn, filename)
     elif len(args) >= 1 and args[0] in ("l", "learn"):
-        knn = learnLetter(directory=direc)
-        output = "data.pkl"
-        if len(args) >= 3:
-            output = args[1]
-        pickle_knn(output, knn)
+        knn = learnLetter(pickle_knn=True, directory=direc)
     elif len(args) >= 1 and args[0] in ("f", "format"):
         if len(args) >= 2:
             for filename in args[1:]:

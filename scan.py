@@ -8,6 +8,7 @@ import numpy
 import pickle
 from os import path
 from glob import glob
+from cv2 import KNearest
 #
 # cycle de scan de caracteres uniques
 def scan(knn, filename):
@@ -49,7 +50,7 @@ def splitDataset(filename):
             i += 1
 #
 # cycle d'apprentissage de lettre
-def learnLetter(directory = "./dataset/"):
+def learnLetter(pickle_knn=False, directory="./dataset/"):
     knn = cv2.KNearest()
     imgList = []
     imgTag = []
@@ -68,6 +69,10 @@ def learnLetter(directory = "./dataset/"):
     # print(numpy.array(imgList).astype(numpy.float64))
     # print(numpy.array(imgTag).astype(numpy.float64))
     knn.train(numpy.float32(imgList), numpy.float32(imgTag))
+    if pickle_knn:
+        output = open("data.pkl", 'wb')
+        pickle.dump(knn, output)
+        output.close()
     return knn
 
 def findLetter(knn, lines):
@@ -93,13 +98,6 @@ def findLetter(knn, lines):
                 cv2.waitKey(0)
 #                cv2.imshow('2end letter bounding detection', preprocess.process_char(c))
 #                cv2.waitKey(0)
-
-
-def pickle_knn(filename, knn):
-    cv2.KNearest()
-    output = open(filename, 'wb')
-    pickle.dump(knn, output)
-    output.close()
 
 
 def read_pickled_knn(filename):
