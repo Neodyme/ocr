@@ -16,6 +16,7 @@
 
 import sys
 import getopt
+import postprocess as ps
 
 from scan import *
 import gui
@@ -32,6 +33,7 @@ def print_help():
 if __name__=="__main__":
     optlist, args = getopt.getopt(sys.argv[1:], "hd:", ["help", "dir"])
     direc = "dataset"
+    p = ps.postprocess()
     for o, a in optlist:
         if o in ("-h", "--help"):
             print_help()
@@ -40,12 +42,12 @@ if __name__=="__main__":
     if len(args) >= 2 and args[0] in ("s", "scan"):
         knn = learnLetter()
         for filename in args[1:]:
-            scan(knn, filename)
+            scan(knn, filename, p)
     elif len(args) >= 2 and args[0] in ("t", "text"):
         print(direc)
         knn = learnLetter(directory=direc)
         for filename in args[1:]:
-            scantext(knn, filename)
+            scantext(knn, filename, p)
     elif len(args) >= 1 and args[0] in ("l", "learn"):
         if len(args) >= 2:
             knn = learnLetter(filename)
